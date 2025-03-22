@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:login_application/common_files/custom_scaffold.dart';
 
 class SignInPage extends StatefulWidget {
@@ -9,6 +10,9 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPage extends State<SignInPage> {
+  final TextEditingController _userNameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -49,14 +53,55 @@ class _SignInPage extends State<SignInPage> {
             )
           ],
         ),
+        SizedBox(
+          height: 20,
+        ),
         Text(
           'USER LOGIN',
-          style: TextStyle(
+          style: GoogleFonts.robotoSerif(
             color: Theme.of(context).colorScheme.primary,
-            fontWeight: FontWeight.bold,
-            fontFamily: 
+            fontWeight: FontWeight.w700,
           ),
         ),
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 30,
+            left: 30,
+            right: 30,
+            bottom: 10,
+          ),
+          child: TextFormField(
+            controller: _userNameController,
+            decoration: InputDecoration(
+                border: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(6)),
+                ),
+                filled: false,
+                focusColor: Theme.of(context).colorScheme.primary,
+                prefixIcon: const Icon(Icons.people_alt_outlined),
+                prefixIconColor: Theme.of(context).colorScheme.primary),
+            // style: const TextStyle(color: Colors.green),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 10,
+            left: 30,
+            right: 30,
+            bottom: 10,
+          ),
+          child: TextFormField(
+            controller: _passwordController,
+            decoration: InputDecoration(
+              border: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(6)),
+              ),
+              prefixIcon: const Icon(Icons.password_outlined),
+              prefixIconColor: Theme.of(context).colorScheme.primary,
+            ),
+            // style: const TextStyle(color: Colors.green),
+          ),
+        )
       ],
     ));
   }
