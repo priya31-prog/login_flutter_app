@@ -30,7 +30,10 @@ class CustomScaffold extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: bodyGradient,
         ),
-        child: body,
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 20),
+          child: body,
+        ),
       ),
       floatingActionButton: floatingActionButton,
       drawer: drawer,
