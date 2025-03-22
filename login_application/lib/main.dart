@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:login_application/common_files/app_constants.dart';
 import 'package:login_application/detail_page/home_page.dart';
+import 'package:login_application/detail_page/sign_in_page.dart';
 // import 'firebase_options.dart';
 
 void main() async {
@@ -29,7 +30,8 @@ class MyApp extends StatelessWidget {
         // scaffoldBackgroundColor: bodyGradient,
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Home Page'),
+      // home: const MyHomePage(title: 'Home Page'),
+      home: const SignInPage(),
     );
   }
 }

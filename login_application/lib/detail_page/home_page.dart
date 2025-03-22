@@ -35,6 +35,18 @@ class _MyHomePage extends State<MyHomePage> {
                       blurRadius: 7,
                     ),
                   ]),
+              child: Center(
+                child: SizedBox(
+                    height: 40,
+                    width: 40,
+                    child: Image.asset(
+                      'assets/images/hand_phone.jpg',
+                      errorBuilder: (BuildContext context, Object error,
+                          StackTrace? stackTrace) {
+                        return Text('Image failed to load');
+                      },
+                    )),
+              ),
             ),
           ),
           Column(
