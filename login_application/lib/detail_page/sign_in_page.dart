@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:login_application/common_files/custom_scaffold.dart';
@@ -18,7 +20,42 @@ class _SignInPage extends State<SignInPage> {
   bool isPasswordVisible = false;
   bool isLoginMobile = false;
 
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  String _verificationId = '';
+  String _smsCode = '';
+  String _phoneNumber = '';
+
   final _formKey = GlobalKey<FormState>();
+
+  Future<void> _verifyPhone() async {
+    await _auth.verifyPhoneNumber(
+      phoneNumber: '7708309962',
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        await _auth.signInWithCredential(credential);
+        print('Successfully logged in..');
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        print('Log in Failed $e');
+      },
+      codeSent: (String verificationId, int? resendToken) {
+        setState(() {
+          _verificationId = verificationId;
+        });
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {
+        setState(() {
+          _verificationId = verificationId;
+        });
+      },
+    );
+  }
+
+  Future<void> _signInWithOTP() async {
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: _verificationId, smsCode: _smsCode);
+    await _auth.signInWithCredential(credential);
+    print('logged in...');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -224,8 +261,10 @@ class _SignInPage extends State<SignInPage> {
                   padding: const EdgeInsets.only(
                       right: 70, left: 70, top: 15, bottom: 15),
                 ),
-                onPressed: () {
+                onPressed: () async {
                   _formKey.currentState!.validate();
+                  await _verifyPhone();
+                  // _signInWithOTP();
                 },
               ),
               Padding(
