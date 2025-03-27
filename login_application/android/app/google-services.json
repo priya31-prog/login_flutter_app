@@ -14,63 +14,13 @@
       },
       "oauth_client": [
         {
-          "client_id": "84673501599-qrhrqroe4d2r9vglpg6cdu2djlfsfvpg.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAE4C5ALmUOoIsjGpdwV9LqrjsLxychYDY"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "84673501599-50vatce5kosgiuh32ufeu7p4tv79pqfo.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:84673501599:android:e27fbdfdfc8010b435c5aa",
-        "android_client_info": {
-          "package_name": "com.example.loginapp"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "84673501599-qrhrqroe4d2r9vglpg6cdu2djlfsfvpg.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAE4C5ALmUOoIsjGpdwV9LqrjsLxychYDY"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "84673501599-50vatce5kosgiuh32ufeu7p4tv79pqfo.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:84673501599:android:d19c24a22a75f9c735c5aa",
-        "android_client_info": {
-          "package_name": "com.login_app"
-        }
-      },
-      "oauth_client": [
+          "client_id": "84673501599-gql2pgs9h1i9n90jr7phb5au8pt99ful.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.login_application",
+            "certificate_hash": "c6fe5aef3362efb2f8255670f706cb91d9297eab"
+          }
+        },
         {
           "client_id": "84673501599-qrhrqroe4d2r9vglpg6cdu2djlfsfvpg.apps.googleusercontent.com",
           "client_type": 3
