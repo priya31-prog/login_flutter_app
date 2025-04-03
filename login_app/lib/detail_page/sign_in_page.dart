@@ -65,7 +65,7 @@ class _SignInPage extends State<SignInPage> {
     return CustomScaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
+          padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 8),
           child: Form(
             key: _formKey,
             child: Column(
