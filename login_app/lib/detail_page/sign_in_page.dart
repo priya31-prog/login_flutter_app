@@ -25,12 +25,14 @@ class _SignInPage extends State<SignInPage> {
   String _verificationId = '';
   String _smsCode = '';
   String _phoneNumber = '';
+  bool isOtpVisible = false;
+  bool isSmsCodeSent = false;
 
   final _formKey = GlobalKey<FormState>();
 
   Future<void> _verifyPhone() async {
     await _auth.verifyPhoneNumber(
-      phoneNumber: '7708309962',
+      phoneNumber: '+917708309962',
       verificationCompleted: (PhoneAuthCredential credential) async {
         await _auth.signInWithCredential(credential);
         print('Successfully logged in..');
@@ -120,7 +122,7 @@ class _SignInPage extends State<SignInPage> {
                     TextButton(
                       onPressed: () {
                         setState(() {
-                          isLoginMobile = true;
+                          isLoginMobile = !isLoginMobile;
                         });
                       },
                       child: Text(
@@ -185,78 +187,97 @@ class _SignInPage extends State<SignInPage> {
                     // right: 30,
                     bottom: 10,
                   ),
-                  child: TextFormField(
-                    maxLength: 30,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (value) {
-                      String errorMessage = '';
-                      if (!isLoginMobile) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter the password';
-                        } else if (value.length < 6) {
-                          return 'Password length must be greater than 5';
-                        }
-                        if (!value.contains(RegExp(r'[A-Z]'))) {
-                          errorMessage += 'Uppercase is missing \n';
-                          // return _errorMessage;
-                        }
-                        if (!value.contains(RegExp(r'[a-z]'))) {
-                          errorMessage += 'Lowercase is missing \n';
-                          // return _errorMessage;
-                        }
-                        if (!value.contains(RegExp(r'[0-9]'))) {
-                          errorMessage += 'one number is missing \n';
-                          // return _errorMessage;
-                        }
-                        if (!value.contains(RegExp(r'[!@#%^&*(),.?":{}|<>]'))) {
-                          errorMessage += 'Special character is missing \n';
-                          // return _errorMessage;
-                        }
-                      } else {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter mobile number';
-                        }
-                        if (!value.contains(RegExp(r'[0-9]'))) {
-                          return 'Please enter only numbers';
-                        }
-                      }
-                      return errorMessage.isEmpty ? null : errorMessage;
-                    },
-                    obscureText: isPasswordVisible ? false : true,
-                    controller:
-                        isLoginMobile ? _otpController : _passwordController,
+                  child:
+                      !isOtpVisible && !isLoginMobile
+                          ? TextFormField(
+                            maxLength: 30,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: (value) {
+                              String errorMessage = '';
+                              if (!isLoginMobile) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter the password';
+                                } else if (value.length < 6) {
+                                  return 'Password length must be greater than 5';
+                                }
+                                if (!value.contains(RegExp(r'[A-Z]'))) {
+                                  errorMessage += 'Uppercase is missing \n';
+                                  // return _errorMessage;
+                                }
+                                if (!value.contains(RegExp(r'[a-z]'))) {
+                                  errorMessage += 'Lowercase is missing \n';
+                                  // return _errorMessage;
+                                }
+                                if (!value.contains(RegExp(r'[0-9]'))) {
+                                  errorMessage += 'one number is missing \n';
+                                  // return _errorMessage;
+                                }
+                                if (!value.contains(
+                                  RegExp(r'[!@#%^&*(),.?":{}|<>]'),
+                                )) {
+                                  errorMessage +=
+                                      'Special character is missing \n';
+                                  // return _errorMessage;
+                                }
+                              } else {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter mobile number';
+                                }
+                                if (!value.contains(RegExp(r'[0-9]'))) {
+                                  return 'Please enter only numbers';
+                                }
+                              }
+                              return errorMessage.isEmpty ? null : errorMessage;
+                            },
+                            obscureText: isPasswordVisible ? false : true,
+                            controller:
+                                isLoginMobile
+                                    ? _otpController
+                                    : _passwordController,
 
-                    // autovalidateMode: AutovalidateMode.always,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.all(8.0),
-                      // isCollapsed: true,
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(6)),
-                      ),
-                      prefixIcon:
-                          isLoginMobile
-                              ? const Icon(Icons.numbers)
-                              : const Icon(Icons.password_outlined),
-                      prefixIconColor: Theme.of(context).colorScheme.primary,
-                      suffixIconColor: Theme.of(context).colorScheme.primary,
-                      suffixIcon: IconButton(
-                        icon:
-                            isPasswordVisible
-                                ? const Icon(Icons.visibility_off)
-                                : const Icon(Icons.remove_red_eye),
-                        onPressed: () {
-                          setState(() {
-                            isPasswordVisible = !isPasswordVisible;
-                          });
-                        },
-                      ),
-                    ),
-                    // style: const TextStyle(color: Colors.green),
-                  ),
+                            // autovalidateMode: AutovalidateMode.always,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.all(8.0),
+                              // isCollapsed: true,
+                              border: const OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(6),
+                                ),
+                              ),
+                              prefixIcon:
+                                  isLoginMobile
+                                      ? const Icon(Icons.numbers)
+                                      : const Icon(Icons.password_outlined),
+                              prefixIconColor:
+                                  Theme.of(context).colorScheme.primary,
+                              suffixIconColor:
+                                  Theme.of(context).colorScheme.primary,
+                              suffixIcon: IconButton(
+                                icon:
+                                    isPasswordVisible
+                                        ? const Icon(Icons.visibility_off)
+                                        : const Icon(Icons.remove_red_eye),
+                                onPressed: () {
+                                  setState(() {
+                                    isPasswordVisible = !isPasswordVisible;
+                                  });
+                                },
+                              ),
+                            ),
+                            // style: const TextStyle(color: Colors.green),
+                          )
+                          : SizedBox.shrink(),
                 ),
                 ElevatedButton.icon(
-                  icon: const Icon(Icons.login_outlined),
-                  label: const Text('Sign In'),
+                  icon:
+                      isSmsCodeSent
+                          ? Icon(Icons.login_outlined)
+                          : SizedBox.shrink(),
+                  label:
+                      isSmsCodeSent
+                          ? const Text('Sign In')
+                          : const Text('Send SMS'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.primary,
                     foregroundColor: Colors.white,
@@ -269,11 +290,44 @@ class _SignInPage extends State<SignInPage> {
                     ),
                   ),
                   onPressed: () async {
+                    if (isLoginMobile) {
+                      setState(() {
+                        isOtpVisible = true;
+                      });
+                    }
                     _formKey.currentState!.validate();
                     await _verifyPhone();
                     // _signInWithOTP();
                   },
                 ),
+
+                isSmsCodeSent
+                    ? ElevatedButton.icon(
+                      icon: SizedBox.shrink(),
+                      label: const Text('Send SMS'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        foregroundColor: Colors.white,
+                        elevation: 12,
+                        padding: const EdgeInsets.only(
+                          right: 70,
+                          left: 70,
+                          top: 15,
+                          bottom: 15,
+                        ),
+                      ),
+                      onPressed: () async {
+                        if (isLoginMobile) {
+                          setState(() {
+                            isSmsCodeSent = true;
+                          });
+                        }
+                        // _formKey.currentState!.validate();
+                        await _verifyPhone();
+                        // _signInWithOTP();
+                      },
+                    )
+                    : SizedBox.shrink(),
                 Padding(
                   padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
                   child: Text(
