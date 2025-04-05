@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:login_app/detail_page/sign_in_page.dart';
+import 'package:login_app/route_navigations/sign_in_page_navigation.dart';
 // import 'package:login_app_sample/detail_page/sign_in_page.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'common_files/app_constants.dart';
@@ -34,7 +35,9 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
       ),
       // home: const MyHomePage(title: 'Home Page'),
-      home: const SignInPage(),
+      // home: const SignInPage(),
+      initialRoute: Routes.home,
+      onGenerateRoute: Routes.generateRoute,
     );
   }
 }

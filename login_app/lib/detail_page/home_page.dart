@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:login_app/common_files/app_constants.dart';
+import 'package:login_app/route_navigations/sign_in_page_navigation.dart';
 // import 'package:login_app_sample/common_files/app_constants.dart';
 
 import '../common_files/custom_scaffold.dart';
@@ -49,6 +50,7 @@ class _MyHomePage extends State<MyHomePage> {
                       Object error,
                       StackTrace? stackTrace,
                     ) {
+                      print('error stack $error');
                       return Text('Image failed to load');
                     },
                   ),
@@ -77,7 +79,9 @@ class _MyHomePage extends State<MyHomePage> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.secondary,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, Routes.signInPage);
+                },
                 child: const Text(
                   AppConstants.homebtnText,
                   style: TextStyle(color: Colors.white),
