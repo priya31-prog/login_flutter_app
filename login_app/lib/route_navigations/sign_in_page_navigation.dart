@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:login_app/detail_page/home_page.dart';
+import 'package:login_app/detail_page/logged_in_success_page.dart';
+import 'package:login_app/detail_page/login_with_otp.dart';
 import 'package:login_app/detail_page/sign_in_page.dart';
 
 class Routes {
   static const String home = '/';
   static const String signInPage = '/signInPage';
+  static const String loggedInPage = '/signInPage/loggedInPage';
+  static const String loginUsingOtp = '/loginOtp';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -14,7 +18,10 @@ class Routes {
         );
       case signInPage:
         return MaterialPageRoute(builder: (_) => SignInPage());
-
+      case loggedInPage:
+        return MaterialPageRoute(builder: (_) => LoggedInSuccessPage());
+      case loginUsingOtp:
+        return MaterialPageRoute(builder: (_) => LoginWithOtp());
       default:
         return MaterialPageRoute(
           builder: (_) => MyHomePage(title: 'login_app'),
