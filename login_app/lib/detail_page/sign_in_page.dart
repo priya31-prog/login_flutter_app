@@ -220,7 +220,9 @@ class _SignInPage extends State<SignInPage> {
                   ),
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, Routes.createAccount);
+                  },
                   child: const Text(
                     'Create an account',
                     style: TextStyle(decoration: TextDecoration.underline),
