@@ -23,26 +23,50 @@ class _LoginWithOtp extends State<LoginWithOtp> {
 
   final _formKey = GlobalKey<FormState>();
 
-  Future<void> _verifyPhone() async {
+  Future<void> _verifyPhoneNumber() async {
+    _phoneNumber = "+917708338491";
+
+    // Set up the reCAPTCHA verifier
+    PhoneVerificationCompleted verificationCompleted = (
+      PhoneAuthCredential phoneAuthCredential,
+    ) async {
+      // If the phone number is already verified, sign in
+      await _auth.signInWithCredential(phoneAuthCredential);
+      print("Phone number automatically verified");
+    };
+
+    PhoneVerificationFailed verificationFailed = (
+      FirebaseAuthException authException,
+    ) {
+      print(authException.message);
+    };
+
+    PhoneCodeSent codeSent = (
+      String verificationId,
+      int? forceResendingToken,
+    ) async {
+      // When the code is sent, update the verification ID
+      setState(() {
+        _verificationId = verificationId;
+      });
+    };
+
+    PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout = (
+      String verificationId,
+    ) {
+      setState(() {
+        _verificationId = verificationId;
+      });
+    };
+
+    // Send the OTP code to the entered phone number
     await _auth.verifyPhoneNumber(
-      phoneNumber: '+917708309962',
-      verificationCompleted: (PhoneAuthCredential credential) async {
-        await _auth.signInWithCredential(credential);
-        print('Successfully logged in..');
-      },
-      verificationFailed: (FirebaseAuthException e) {
-        print('Log in Failed $e');
-      },
-      codeSent: (String verificationId, int? resendToken) {
-        setState(() {
-          _verificationId = verificationId;
-        });
-      },
-      codeAutoRetrievalTimeout: (String verificationId) {
-        setState(() {
-          _verificationId = verificationId;
-        });
-      },
+      phoneNumber: _phoneNumber,
+      verificationCompleted: verificationCompleted,
+      verificationFailed: verificationFailed,
+      codeSent: codeSent,
+      codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
+      timeout: Duration(seconds: 60),
     );
   }
 
@@ -170,7 +194,7 @@ class _LoginWithOtp extends State<LoginWithOtp> {
                     bottom: 10,
                   ),
                   child:
-                      !isOtpVisible
+                      isOtpVisible
                           ? TextFormField(
                             maxLength: 30,
                             autovalidateMode:
@@ -228,7 +252,9 @@ class _LoginWithOtp extends State<LoginWithOtp> {
                           ? Icon(Icons.login_outlined)
                           : SizedBox.shrink(),
                   label:
-                      isSmsCodeSent ? const Text('Send SMS') : Text('Sign In'),
+                      isSmsCodeSent == false
+                          ? const Text('Send SMS')
+                          : Text('Sign In'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.primary,
                     foregroundColor: Colors.white,
@@ -241,12 +267,13 @@ class _LoginWithOtp extends State<LoginWithOtp> {
                     ),
                   ),
                   onPressed: () async {
+                    print('state of sms send..${isSmsCodeSent}');
+
+                    _formKey.currentState!.validate();
+                    await _verifyPhoneNumber();
                     setState(() {
                       isSmsCodeSent = true;
                     });
-
-                    _formKey.currentState!.validate();
-                    await _verifyPhone();
                     // _signInWithOTP();
                   },
                 ),
