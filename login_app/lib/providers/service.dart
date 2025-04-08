@@ -4,16 +4,17 @@ import 'package:http/http.dart' as http;
 import 'package:login_app/providers/models.dart';
 
 class ApiService {
-  final http.Client https;
+  // final http.Client https;
 
-  ApiService({required this.https});
+  // ApiService({required this.https});
 
-  Future<Users> fetchApiResponse() async {
+  Future<List<Users>> fetchApiResponse() async {
     final url = 'https://account-info-api.onrender.com/api/v1/ecommerce/';
-    final response = await https.get(Uri.parse(url));
+    final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
-      return Users.fromJson(json.decode(response.body));
+      List<dynamic> data = json.decode(response.body);
+      return data.map((userJson) => Users.fromJson(userJson)).toList();
     } else {
       throw Exception('Failed to load data');
     }
