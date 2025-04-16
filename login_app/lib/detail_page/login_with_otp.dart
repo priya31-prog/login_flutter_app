@@ -24,15 +24,13 @@ class _LoginWithOtp extends State<LoginWithOtp> {
   final _formKey = GlobalKey<FormState>();
 
   Future<void> _verifyPhoneNumber() async {
-    _phoneNumber = "+917708338491";
+    String phoneNumber = "+917708309962";
 
-    // Set up the reCAPTCHA verifier
     PhoneVerificationCompleted verificationCompleted = (
       PhoneAuthCredential phoneAuthCredential,
     ) async {
-      // If the phone number is already verified, sign in
+      // Automatically sign in the user if verification is completed
       await _auth.signInWithCredential(phoneAuthCredential);
-      print("Phone number automatically verified");
     };
 
     PhoneVerificationFailed verificationFailed = (
@@ -45,7 +43,6 @@ class _LoginWithOtp extends State<LoginWithOtp> {
       String verificationId,
       int? forceResendingToken,
     ) async {
-      // When the code is sent, update the verification ID
       setState(() {
         _verificationId = verificationId;
       });
@@ -59,24 +56,36 @@ class _LoginWithOtp extends State<LoginWithOtp> {
       });
     };
 
-    // Send the OTP code to the entered phone number
-    await _auth.verifyPhoneNumber(
-      phoneNumber: _phoneNumber,
-      verificationCompleted: verificationCompleted,
-      verificationFailed: verificationFailed,
-      codeSent: codeSent,
-      codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
-      timeout: Duration(seconds: 60),
-    );
+    // Firebase automatically handles reCAPTCHA, no need to explicitly set it
+    await _auth
+        .verifyPhoneNumber(
+          phoneNumber: phoneNumber,
+          verificationCompleted: verificationCompleted,
+          verificationFailed: verificationFailed,
+          codeSent: codeSent,
+          codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
+          timeout: Duration(seconds: 60),
+        )
+        .then((value) {
+          setState(() {
+            isSmsCodeSent = true;
+          });
+        });
   }
 
-  Future<void> _signInWithOTP() async {
+  Future<void> _signInWithPhoneNumber() async {
+    _smsCode = "+917708309962";
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
       verificationId: _verificationId,
       smsCode: _smsCode,
     );
-    await _auth.signInWithCredential(credential);
-    print('logged in...');
+
+    try {
+      await _auth.signInWithCredential(credential);
+      print("Successfully signed in");
+    } catch (e) {
+      print("Failed to sign in: $e");
+    }
   }
 
   @override
@@ -271,9 +280,7 @@ class _LoginWithOtp extends State<LoginWithOtp> {
 
                     _formKey.currentState!.validate();
                     await _verifyPhoneNumber();
-                    setState(() {
-                      isSmsCodeSent = true;
-                    });
+
                     // _signInWithOTP();
                   },
                 ),
