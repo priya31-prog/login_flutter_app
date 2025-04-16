@@ -10,12 +10,19 @@ class ApiService {
 
   Future<List<Users>> fetchApiResponse() async {
     final url = 'https://account-info-api.onrender.com/api/v1/ecommerce/';
-    final response = await http.get(Uri.parse(url));
 
-    if (response.statusCode == 200) {
-      List<dynamic> data = json.decode(response.body);
-      return data.map((userJson) => Users.fromJson(userJson)).toList();
-    } else {
+    try {
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body);
+        print('data-------${data}');
+        return data.map((userJson) => Users.fromJson(userJson)).toList();
+      } else {
+        throw Exception('Failed to load data');
+      }
+    } catch (e) {
+      print('error message..-${e.toString()}');
       throw Exception('Failed to load data');
     }
   }
