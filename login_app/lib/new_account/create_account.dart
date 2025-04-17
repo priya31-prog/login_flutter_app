@@ -32,7 +32,7 @@ class _CreateAccount extends State<CreateAccount> {
 
   Future<void> getData() async {
     final shared = await SharedPreferences.getInstance();
-    String? username = shared.getString('username');
+    String? username = shared.getString('userName');
     print('user name is $username');
   }
 
@@ -102,14 +102,15 @@ class _CreateAccount extends State<CreateAccount> {
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         userName = _userNameController.text;
-                        saveData(
-                          _userNameController.text,
+                        print('insie on press --$userName');
+                        await saveData(
+                          userName,
                           _emailController.text,
                           _passwordController.text,
                         );
-                        clearText();
+                        // clearText();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -123,7 +124,7 @@ class _CreateAccount extends State<CreateAccount> {
               ElevatedButton(
                 onPressed: () {
                   getData();
-                  clearText();
+                  // clearText();
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.primary,
