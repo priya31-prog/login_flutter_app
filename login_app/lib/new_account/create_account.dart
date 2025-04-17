@@ -33,7 +33,7 @@ class _CreateAccount extends State<CreateAccount> {
   Future<void> getData() async {
     final shared = await SharedPreferences.getInstance();
     String? username = shared.getString('userName');
-    print('user name is $username');
+    // print('user name is $username');
   }
 
   @override
@@ -97,20 +97,39 @@ class _CreateAccount extends State<CreateAccount> {
                   hintStyle: TextStyle(fontSize: 14),
                 ),
               ),
-              SizedBox(height: 30),
+              SizedBox(height: 20),
+              Text(
+                'Confirm password',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8),
+              TextField(
+                controller: _passwordController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  hintText: 're-enter password',
+                  hintStyle: TextStyle(fontSize: 14),
+                ),
+              ),
+              SizedBox(height: 50),
               Row(
                 children: [
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () async {
+                        //save username in shared preference
+
+                        //use api and post method to add the user to database..
                         userName = _userNameController.text;
-                        print('insie on press --$userName');
+                        // print('insie on press --$userName');
                         await saveData(
                           userName,
                           _emailController.text,
                           _passwordController.text,
                         );
-                        // clearText();
+                        clearText();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -121,17 +140,19 @@ class _CreateAccount extends State<CreateAccount> {
                   ),
                 ],
               ),
-              ElevatedButton(
-                onPressed: () {
-                  getData();
-                  // clearText();
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  foregroundColor: Colors.white,
-                ),
-                child: Text('getData'),
-              ),
+
+              // ----demo code to get data---
+              // ElevatedButton(
+              //   onPressed: () {
+              //     getData();
+              //     // clearText();
+              //   },
+              //   style: ElevatedButton.styleFrom(
+              //     backgroundColor: Theme.of(context).colorScheme.primary,
+              //     foregroundColor: Colors.white,
+              //   ),
+              //   child: Text('getData'),
+              // ),
             ],
           ),
         ),
