@@ -6,12 +6,14 @@ class CustomScaffold extends StatelessWidget {
   final Widget body;
   final FloatingActionButton? floatingActionButton;
   final Drawer? drawer;
+  final bool? extendBodyBehindAppBar;
 
   const CustomScaffold({
     required this.body,
     this.appBar,
     this.floatingActionButton,
     this.drawer,
+    this.extendBodyBehindAppBar,
   });
 
   final LinearGradient bodyGradient = const LinearGradient(
@@ -23,6 +25,7 @@ class CustomScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: extendBodyBehindAppBar ?? false,
       appBar: appBar,
       body: Container(
         width: double.infinity,
