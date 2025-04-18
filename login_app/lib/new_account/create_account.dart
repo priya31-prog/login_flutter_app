@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:login_app/api/service.dart';
 import 'package:login_app/common_files/custom_scaffold.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,19 +22,15 @@ class _CreateAccount extends State<CreateAccount> {
     _passwordController.clear();
   }
 
-  Future<void> saveData(
-    final String username,
-    final String email,
-    final String password,
-  ) async {
+  Future<void> saveData(final String username) async {
     final shared = await SharedPreferences.getInstance();
     await shared.setString('userName', username);
   }
 
-  Future<void> getData() async {
+  Future<String> getData() async {
     final shared = await SharedPreferences.getInstance();
     String? username = shared.getString('userName');
-    // print('user name is $username');
+    return username ?? '';
   }
 
   @override
@@ -122,13 +119,16 @@ class _CreateAccount extends State<CreateAccount> {
                         //save username in shared preference
 
                         //use api and post method to add the user to database..
+
                         userName = _userNameController.text;
-                        // print('insie on press --$userName');
-                        await saveData(
-                          userName,
-                          _emailController.text,
-                          _passwordController.text,
+                        await RegisterAccount().registerUser(
+                          username: userName,
+                          password: _passwordController.text,
+                          email: _emailController.text,
                         );
+
+                        // print('insie on press --$userName');
+                        await saveData(userName);
                         clearText();
                       },
                       style: ElevatedButton.styleFrom(
