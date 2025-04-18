@@ -1,5 +1,5 @@
 import 'package:login_app/providers/models.dart';
-import 'package:login_app/providers/service.dart';
+import 'package:login_app/api/service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class UserState {
